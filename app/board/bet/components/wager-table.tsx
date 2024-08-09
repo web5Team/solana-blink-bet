@@ -39,6 +39,11 @@ const columns: ColumnDef<Wager, any>[] = [
     header: '结算状态',
   },
   {
+    accessorKey: 'profitSignature',
+    header: '结算交易',
+    cell: renderLinkToSolscanTx,
+  },
+  {
     accessorKey: 'settlementError',
     header: '结算错误信息',
     cell(props) {
@@ -106,7 +111,7 @@ export function WagerTable({ betId }: { betId: number }) {
 
   return (
     <div className="max-w-[62rem]">
-      <Table>
+      <Table className="min-w-[68rem]">
         <FlatTableHeader table={table} />
         <FlatTableBody
           queryState={{ isFetching, isLoading }}

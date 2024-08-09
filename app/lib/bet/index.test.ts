@@ -2,7 +2,7 @@
 
 /* eslint-disable node/prefer-global/buffer */
 import { describe, expect, it, vi } from 'vitest'
-import { type Connection, type GetProgramAccountsResponse, PublicKey, Transaction, type TransactionInstruction, TransactionMessage, VersionedTransaction, sendAndConfirmTransaction } from '@solana/web3.js'
+import { type Connection, type GetProgramAccountsResponse, PublicKey, type TransactionInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js'
 import type { wagers } from '@schema'
 import BigNumber from 'bignumber.js'
 import { createAssociatedTokenAccountIdempotentInstruction, createTransferInstruction, getAssociatedTokenAddress } from '@solana/spl-token'
@@ -60,14 +60,14 @@ describe('bet/settle transfer out', () => {
     // )
     // console.info('result', result.value.err)
     expect(result.value.err).toBeNull()
-    const trx = new Transaction({
-      ...latestBlockhash,
-      feePayer: root.publicKey,
-    })
-    trx.add(...ins)
-    trx.sign(root)
-    const signature = await sendAndConfirmTransaction(conn, trx, [root])
-    console.info('signature:', signature)
+    // const trx = new Transaction({
+    //   ...latestBlockhash,
+    //   feePayer: root.publicKey,
+    // })
+    // trx.add(...ins)
+    // trx.sign(root)
+    // const signature = await sendAndConfirmTransaction(conn, trx, [root])
+    // console.info('signature:', signature)
 
     // expect(signature).eq(bs58.encode(trx.signature!))
   })

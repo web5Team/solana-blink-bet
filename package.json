@@ -55,6 +55,7 @@
     "drizzle-orm": "^0.32.2",
     "drizzle-zod": "^0.5.1",
     "framer-motion": "^11.3.23",
+    "ky": "^1.5.0",
     "lucide-react": "^0.424.0",
     "micro-ed25519-hdkey": "^0.1.2",
     "next": "14.2.4",

@@ -92,10 +92,10 @@ export function BlinkPreview({ data, url }: { data: ActionGetResponse, url: stri
     <div
       className={cn('bg-white shadow-lg rounded-[1rem] max-w-[28rem] w-full', 'blink dial-light')}
     >
-      <div className={cn('block px-5 pt-5')}>
+      <div className={cn('block max-h-[100cqw] overflow-y-hidden px-5 pt-5')}>
         <img
-          alt={data.description}
-          className={cn('w-full rounded-xl object-cover object-left aspect-square')}
+          alt="action-image"
+          className={cn('aspect-auto w-full rounded-xl object-cover object-center')}
           src={data.icon}
         />
       </div>
