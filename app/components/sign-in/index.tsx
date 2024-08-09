@@ -4,6 +4,7 @@ import type { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AuthError } from 'next-auth'
 import { parseUnknownError } from '@utils'
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
@@ -13,6 +14,7 @@ import { signInAction } from './actions'
 import { signInSchema } from '@/auth'
 
 export function SignIn() {
+  const router = useRouter()
   const { toast } = useToast()
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -30,10 +32,11 @@ export function SignIn() {
       await signInAction(
         'credentials',
         {
-          redirectTo: '/board',
+          redirect: false,
           ...values,
         },
       )
+      router.replace('/board')
     }
     catch (err: any) {
       if (err instanceof AuthError) {
