@@ -2,7 +2,7 @@ import type { Wager } from '@schema'
 import { type ColumnDef, getCoreRowModel, getPaginationRowModel, useReactTable } from '@tanstack/react-table'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { renderLinkToSolscan } from '../lib/utils'
+import { renderLinkToSolscanAccount, renderLinkToSolscanTx } from '../lib/utils'
 import { getWagersAction, settleForSomeOneAction } from '../lib/actions'
 import { Table } from '@/components/ui/table'
 import { TablePagination, usePaginationState } from '@/components/common/table/table-pagination'
@@ -15,7 +15,7 @@ const columns: ColumnDef<Wager, any>[] = [
   {
     accessorKey: 'userAddress',
     header: '用户地址',
-    cell: renderLinkToSolscan,
+    cell: renderLinkToSolscanAccount,
   },
   {
     accessorKey: 'token',
@@ -28,7 +28,7 @@ const columns: ColumnDef<Wager, any>[] = [
   {
     accessorKey: 'signature',
     header: '交易',
-    cell: renderLinkToSolscan,
+    cell: renderLinkToSolscanTx,
   },
   {
     accessorKey: 'status',

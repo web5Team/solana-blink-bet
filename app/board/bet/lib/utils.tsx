@@ -23,12 +23,26 @@ export function renderDateWithRelative({ cell: { getValue } }: { cell: { getValu
   )
 }
 
-export function renderLinkToSolscan({ cell: { getValue } }: { cell: { getValue: () => any } }) {
+export function renderLinkToSolscanTx({ cell: { getValue } }: { cell: { getValue: () => any } }) {
   return getValue()
     ? (
         <Link
           className="max-w-[12rem] inline-block text-ellipsis overflow-hidden decoration-dotted underline text-blue-500"
           href={`https://solscan.io/tx/${getValue()}`}
+          target="_blank"
+        >
+          {getValue()}
+        </Link>
+      )
+    : 'N/A'
+}
+
+export function renderLinkToSolscanAccount({ cell: { getValue } }: { cell: { getValue: () => any } }) {
+  return getValue()
+    ? (
+        <Link
+          className="max-w-[12rem] inline-block text-ellipsis overflow-hidden decoration-dotted underline text-blue-500"
+          href={`https://solscan.io/account/${getValue()}`}
           target="_blank"
         >
           {getValue()}

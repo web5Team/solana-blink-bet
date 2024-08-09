@@ -10,7 +10,7 @@ import {
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 import { deleteBetAction, getBetsAction, settleAllBetsAction } from '../lib/actions'
-import { renderDateWithRelative, renderLinkToSolscan } from '../lib/utils'
+import { renderDateWithRelative, renderLinkToSolscanAccount, renderLinkToSolscanTx } from '../lib/utils'
 import { BetCreateDialog } from './bet-create'
 import { WagerTable } from './wager-table'
 import { FlatTableBody } from '@/components/common/table/table-body'
@@ -57,7 +57,7 @@ const columns: ColumnDef<Bet, any>[] = [
     accessorKey: 'settlementSignature',
     header: '结算签名Hash',
     // accessorFn: bet => bet.settlementSignature ?? 'N/A',
-    cell: renderLinkToSolscan,
+    cell: renderLinkToSolscanTx,
   },
   {
     accessorKey: 'settlementError',
@@ -70,7 +70,7 @@ const columns: ColumnDef<Bet, any>[] = [
   {
     accessorKey: 'fundingAccount',
     header: '资金账户',
-    cell: renderLinkToSolscan,
+    cell: renderLinkToSolscanAccount,
   },
   {
     accessorKey: 'createdAt',
