@@ -73,7 +73,10 @@ export const BetCreateDialog: FC<{ children: React.ReactNode, onCreated?: () => 
         <Form {...form}>
           <form
             className="space-y-4"
-            onSubmit={form.handleSubmit(values => mutate(values))}
+            onSubmit={form.handleSubmit(values => mutate({
+              startedAt: dayjs.tz(values.startedAt, dayjs.tz.guess()).toString(),
+              scheduledDrawingAt: dayjs.tz(values.scheduledDrawingAt, dayjs.tz.guess()).toString(),
+            }))}
           >
             <FormField
               control={form.control}
