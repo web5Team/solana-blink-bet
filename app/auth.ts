@@ -25,7 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           // const pwHash = await bcrypt.hash(String(credentials.password), process.env.AUTH_SECRET!)
           // user =
           const { password, username } = await signInSchema.parseAsync(credentials)
-          if (password === 'qwerqwerqwer' && username === 'admin') {
+          if (password === process.env.NEXT_BOARD_PASSWORD && username === 'admin') {
             user = {
               id: '1',
               name: 'admin',

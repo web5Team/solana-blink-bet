@@ -7,6 +7,7 @@ declare global {
       NEXT_DATABASE_URL: string
       NEXT_MEMO_SECRET: string
       NEXT_INTERNAL_API_SECRET: string
+      NEXT_BOARD_PASSWORD: string
       AUTH_SECRET: string
       NODE_ENV: string
       PORT?: string
