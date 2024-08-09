@@ -12,8 +12,10 @@ export async function setBettingActionConfigAction(config: ActionGetResponse) {
 export async function getBettingActionConfigAction() {
   try {
     const config = await getDictionaryValue<ActionGetResponse>('actions-config-betting')
-    if (!config)
+    if (!config) {
+      console.info('❌ actions-config-betting not found')
       throw new Error('not found')
+    }
     return config
   }
   catch {
