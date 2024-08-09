@@ -68,25 +68,27 @@ export async function settleBet(
         settlementSignature: betSettlementSignature,
       }).where(eq(bets.id, bet.id))
 
-      // const allSOLWagers = await $tx.select().from(wagers).where(and(
-      //   eq(wagers.betId, bet.id),
-      //   eq(wagers.token, 'SOL'),
-      // ))
-      // console.info('all sol wagers', allSOLWagers)
-      // await winnersSettleForToken(
-      //   conn,
-      //   bet.id,
-      //   fundingAccount,
-      //   allSOLWagers,
-      //   'SOL',
-      //   isEven,
-      // )
+      const allSOLWagers = await $tx.select().from(wagers).where(and(
+        eq(wagers.betId, bet.id),
+        eq(wagers.token, 'SOL'),
+      ))
+      console.info('📔 All sol wagers:', allSOLWagers.length)
+      // console.info('📔 All sol wagers:', allSOLWagers.map(wager => wager.userAddress))
+      await winnersSettleForToken(
+        conn,
+        bet.id,
+        fundingAccount,
+        allSOLWagers,
+        'SOL',
+        betResult === 'even',
+      )
 
       const allMUSHUWagers = await $tx.select().from(wagers).where(and(
         eq(wagers.betId, bet.id),
         eq(wagers.token, 'MUSHU'),
       ))
-      console.info('📔 All mushu wagers:', allMUSHUWagers.map(wager => wager.userAddress))
+      console.info('📔 All mushu wagers:', allMUSHUWagers.length)
+      // console.info('📔 All mushu wagers:', allMUSHUWagers.map(wager => wager.userAddress))
       await winnersSettleForToken(
         conn,
         bet.id,

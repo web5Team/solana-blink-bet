@@ -1,5 +1,5 @@
 import db, { bets } from '@db'
-import { and, count, eq, isNull, lte, or } from 'drizzle-orm'
+import { and, count, desc, eq, isNull, lte, or } from 'drizzle-orm'
 import type { Connection } from '@solana/web3.js'
 import { withPagination } from './utils'
 import { dayjs } from '@/lib/utils'
@@ -24,7 +24,7 @@ export async function settleBets(conn: Connection, settleBet: (conn: Connection,
 }
 
 export async function getBets(page: number, limit: number) {
-  const items = withPagination(db.select().from(bets).$dynamic(), page, limit)
+  const items = withPagination(db.select().from(bets).orderBy(desc(bets.startedAt)).$dynamic(), page, limit)
   return {
     items: await items,
     count: await db.select({ count: count() }).from(bets).then(it => it.at(0)?.count ?? 0),
