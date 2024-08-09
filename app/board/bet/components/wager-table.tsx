@@ -26,8 +26,12 @@ const columns: ColumnDef<Wager, any>[] = [
     header: '金额',
   },
   {
+    accessorKey: 'prediction',
+    header: '预测',
+  },
+  {
     accessorKey: 'signature',
-    header: '交易',
+    header: '参加证明',
     cell: renderLinkToSolscanTx,
   },
   {
@@ -36,7 +40,7 @@ const columns: ColumnDef<Wager, any>[] = [
   },
   {
     accessorKey: 'settlementError',
-    header: '错误信息',
+    header: '结算错误信息',
     cell(props) {
       return <pre className="font-mono font-xs min-w-[6rem]">{props.renderValue() || 'N/A'}</pre>
     },
