@@ -37,6 +37,9 @@ const columns: ColumnDef<Wager, any>[] = [
   {
     accessorKey: 'settlementError',
     header: '错误信息',
+    cell(props) {
+      return <pre className="font-mono font-xs min-w-[6rem]">{props.renderValue() || 'N/A'}</pre>
+    },
   },
   {
     header: '操作',
