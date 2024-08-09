@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "webworker"
+    ],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": [
+        "./app/*"
+      ],
+      "@utils": [
+        "./utils/index.ts"
+      ],
+      "@db": ["./db/index.ts"],
+      "@schema": ["./db/schema/index.ts"]
+    },
+    "resolveJsonModule": true,
+    "types": [
+      "@serwist/next/typings"
+    ],
+    "allowJs": false,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "**.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "public/sw.js",
+    "scripts"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "TEMPLATE_APP_NAME",
+  "short_name": "TEMPLATE_APP_NAME",
+  "description": "TEMPLATE_APP_DESCRIPTION",
+  "icons": [
+    {
+      "src": "/pwa-icon@144.png",
+      "sizes": "144x144",
+      "purpose": "any",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}

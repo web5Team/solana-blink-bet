@@ -1,0 +1,1 @@
+ALTER TABLE "bets" ADD COLUMN "wager_loaded" boolean DEFAULT false NOT NULL;

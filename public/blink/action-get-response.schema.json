@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "ActionError": {
+            "description": "Error message that can be returned from an Actions API",
+            "properties": {
+                "message": {
+                    "description": "non-fatal error message to be displayed to the user",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "ActionParameter": {
+            "description": "Parameter to accept user input within an action",
+            "properties": {
+                "label": {
+                    "description": "placeholder text for the user input field",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "parameter name in url",
+                    "type": "string"
+                },
+                "required": {
+                    "description": "declare if this field is required (defaults to `false`)",
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
+        },
+        "LinkedAction": {
+            "description": "Related action on a single endpoint",
+            "properties": {
+                "href": {
+                    "description": "URL endpoint for an action",
+                    "type": "string"
+                },
+                "label": {
+                    "description": "button text rendered to the user",
+                    "type": "string"
+                },
+                "parameters": {
+                    "description": "parameters used to accept user input within an action",
+                    "items": {
+                        "$ref": "#/definitions/ActionParameter"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "description": "Response body payload returned from the Action GET Request",
+    "properties": {
+        "description": {
+            "description": "brief summary of the action to be performed",
+            "type": "string"
+        },
+        "disabled": {
+            "description": "UI state for the button being rendered to the user",
+            "type": "boolean"
+        },
+        "error": {
+            "$ref": "#/definitions/ActionError",
+            "description": "non-fatal error message to be displayed to the user"
+        },
+        "icon": {
+            "description": "image url that represents the source of the action request",
+            "type": "string"
+        },
+        "label": {
+            "description": "button text rendered to the user",
+            "type": "string"
+        },
+        "links": {
+            "properties": {
+                "actions": {
+                    "description": "list of related Actions a user could perform",
+                    "items": {
+                        "$ref": "#/definitions/LinkedAction"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "title": {
+            "description": "describes the source of the action request",
+            "type": "string"
+        }
+    },
+    "type": "object"
+}
+

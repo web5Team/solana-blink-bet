@@ -1,0 +1,292 @@
+{
+  "id": "2c4efd8e-a6f0-4a5f-8bd0-bf55f4b59edf",
+  "prevId": "add9d21b-4b47-429f-8505-c31ccace352a",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.dictionary": {
+      "name": "dictionary",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "dictionary_key_unique": {
+          "name": "dictionary_key_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "key"
+          ]
+        }
+      }
+    },
+    "public.bets": {
+      "name": "bets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "closed_at": {
+          "name": "closed_at",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scheduled_drawing_block": {
+          "name": "scheduled_drawing_block",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "result": {
+          "name": "result",
+          "type": "bet_prediction",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "bet_settle_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "wager_loaded": {
+          "name": "wager_loaded",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "funding_account": {
+          "name": "funding_account",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "settle_signature": {
+          "name": "settle_signature",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "settle_error": {
+          "name": "settle_error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.wagers": {
+      "name": "wagers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "bet_id": {
+          "name": "bet_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_address": {
+          "name": "user_address",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prediction": {
+          "name": "prediction",
+          "type": "bet_prediction",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric(40, 0)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "bet_token",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "block_number": {
+          "name": "block_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "signature": {
+          "name": "signature",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "wager_settle_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "profit": {
+          "name": "profit",
+          "type": "numeric(40, 0)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "profit_signature": {
+          "name": "profit_signature",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "settlement_error": {
+          "name": "settlement_error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "wagers_bet_id_bets_id_fk": {
+          "name": "wagers_bet_id_bets_id_fk",
+          "tableFrom": "wagers",
+          "tableTo": "bets",
+          "columnsFrom": [
+            "bet_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "wagers_signature_bet_id_user_address_unique": {
+          "name": "wagers_signature_bet_id_user_address_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "signature",
+            "bet_id",
+            "user_address"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {
+    "public.bet_prediction": {
+      "name": "bet_prediction",
+      "schema": "public",
+      "values": [
+        "odd",
+        "even"
+      ]
+    },
+    "public.bet_settle_status": {
+      "name": "bet_settle_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "success",
+        "error"
+      ]
+    },
+    "public.bet_token": {
+      "name": "bet_token",
+      "schema": "public",
+      "values": [
+        "SOL",
+        "MUSHU"
+      ]
+    },
+    "public.wager_settle_status": {
+      "name": "wager_settle_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "success",
+        "error"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

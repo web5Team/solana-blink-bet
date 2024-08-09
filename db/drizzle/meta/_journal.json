@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1722931978310,
+      "tag": "0000_clever_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1722932096422,
+      "tag": "0001_lame_queen_noir",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1722934345768,
+      "tag": "0002_sudden_hellion",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1722934861396,
+      "tag": "0003_rapid_centennial",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1723108207339,
+      "tag": "0004_colorful_colleen_wing",
+      "breakpoints": true
+    }
+  ]
+}

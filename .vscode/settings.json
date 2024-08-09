@@ -1,0 +1,36 @@
+{
+  "prettier.enable": false,
+  "eslint.enable": true,
+
+  "editor.linkedEditing": true,
+  "javascript.preferences.renameMatchingJsxTags": true,
+  "typescript.preferences.renameMatchingJsxTags": true,
+
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["(clsx|cn|cx)\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@radix-ui",
+    "dayjs",
+    "lucide-react",
+    "next/router"
+  ]
+}

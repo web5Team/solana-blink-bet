@@ -1,0 +1,2 @@
+ALTER TABLE "wagers" DROP CONSTRAINT "wagers_signature_unique";--> statement-breakpoint
+ALTER TABLE "wagers" ADD CONSTRAINT "wagers_signature_bet_id_user_address_unique" UNIQUE("signature","bet_id","user_address");
