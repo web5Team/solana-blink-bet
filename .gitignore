@@ -41,3 +41,5 @@ public/swe-worker*
 
 db.sqlite
 db.test.sqlite
+
+data/
