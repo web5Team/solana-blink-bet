@@ -12,7 +12,8 @@ export async function settleBets(conn: Connection, settleBet: (conn: Connection,
     lte(bets.scheduledDrawingAt, dayjs().toDate()),
     or(
       eq(bets.status, 'pending'),
-      eq(bets.status, 'error'),
+      // error status should be exlicitly settled
+      // eq(bets.status, 'error'),
     ),
     isNull(bets.closedAt),
   ))

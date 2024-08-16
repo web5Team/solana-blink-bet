@@ -97,7 +97,7 @@ export function WagerTable({ betId }: { betId: number }) {
   const [pagination, setPagination] = usePaginationState()
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['bet', betId, 'wagers', 'table', { pagination }],
-    queryFn: () => getWagersAction(pagination),
+    queryFn: () => getWagersAction(betId, pagination),
   })
 
   const table = useReactTable({

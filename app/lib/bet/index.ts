@@ -45,20 +45,18 @@ export async function settleBet(
         result: betResult,
       }).where(eq(bets.id, bet.id))
     }
-    else {
-      console.info(`📔 Bet ID: ${bet.id} Settlement signature already exists, bet result: ${betResult}, signature: ${betSettlementSignature}`)
-    }
-    const fundingAccount = await getBetDerivedAccount(bet.id)
-    console.info('📔 Bet ID:', bet.id, 'Funding account bs58:', fundingAccount.publicKey.toBase58())
 
-    // 首先载入参与者到数据库
+    const fundingAccount = await getBetDerivedAccount(bet.id)
+    console.info('📔 Now settle Bet ID:', bet.id, 'Funding account bs58:', fundingAccount.publicKey.toBase58(), 'Bet Result:', betResult)
+
+    // Sync to database first
     if (!bet.wagerLoaded || forceReload) {
       console.info('📔 Syncing wagers to Database...')
       const rowCount = await syncWagersToDatabase(conn, bet)
       console.info('✅ All wagers synced to Database, length: ', rowCount)
     }
 
-    // 再结算
+    // Then settle winners
     await db.transaction(async ($tx) => {
       await $tx.update(bets).set({
         closedAt: new Date(),
@@ -72,9 +70,8 @@ export async function settleBet(
         eq(wagers.betId, bet.id),
         eq(wagers.token, 'SOL'),
       ))
-      console.info('📔 All sol wagers:', allSOLWagers.length)
-      // console.info('📔 All sol wagers:', allSOLWagers.map(wager => wager.userAddress))
-      await winnersSettleForToken(
+      console.info('📔 All SOL Token wagers:', allSOLWagers.length)
+      await settleWinnersForToken(
         conn,
         bet.id,
         fundingAccount,
@@ -87,9 +84,8 @@ export async function settleBet(
         eq(wagers.betId, bet.id),
         eq(wagers.token, 'MUSHU'),
       ))
-      console.info('📔 All mushu wagers:', allMUSHUWagers.length)
-      // console.info('📔 All mushu wagers:', allMUSHUWagers.map(wager => wager.userAddress))
-      await winnersSettleForToken(
+      console.info('📔 All MUSHU Token wagers:', allMUSHUWagers.length)
+      await settleWinnersForToken(
         conn,
         bet.id,
         fundingAccount,
@@ -97,10 +93,11 @@ export async function settleBet(
         'MUSHU',
         betResult === 'even',
       )
-    // 都处理完成 事务成功提交
+      // Once all processing is complete, the bet is considered settled
     })
   }
   catch (err: any) {
+    // If there is an error, update the bet status.
     await db.update(bets).set({
       status: 'error',
       settlementError: parseUnknownError(err),
@@ -109,7 +106,7 @@ export async function settleBet(
   }
 }
 
-async function winnersSettleForToken(
+async function settleWinnersForToken(
   conn: Connection,
   betId: number,
   fundingAccount: Keypair,
@@ -124,6 +121,7 @@ async function winnersSettleForToken(
   const evenAmount = evenWagers.reduce((acc, wager) => acc.plus(BigNumber(wager.amount)), BigNumber(0))
   const totalAmountPool = oddAmount.plus(evenAmount)
 
+  // resettle unsuccessful wagers
   const unsettledOddWagers = oddWagers.filter(wager => wager.status !== 'success')
   const unsettledEvenWagers = evenWagers.filter(wager => wager.status !== 'success')
 
@@ -173,7 +171,7 @@ export async function winnerSettle(
   loserAmountPool: BigNumber,
 ) {
   await db.transaction(async ($innerTx) => {
-    // 扣除手续费 如果用meme token投注，则不扣除手续费，如果钱包里有 [2DMMamkkxQ6zDMBtkFp8KH7FoWzBMBA1CGTYwom4QH6Z] 也不扣除手续费
+    // Deduct the fee. If betting with meme token, no fee is deducted. If the wallet contains [2DMMamkkxQ6zDMBtkFp8KH7FoWzBMBA1CGTYwom4QH6Z], no fee is deducted either.
     try {
       const profit = await calculateProfit(conn, winner, totalAmountPool, loserAmountPool)
       console.info('📔 Transfer profit to winner:', winner.userAddress, 'token:', token, 'amount:', profit.toString())
@@ -184,7 +182,7 @@ export async function winnerSettle(
         new PublicKey(winner.userAddress),
       )
 
-      // 先update 再发送交易，以免update失败无法回滚交易
+      // Update first, then send the transaction to avoid the inability to roll back the transaction if the update fails.
       await $innerTx.update(wagers).set({
         status: 'success',
         profit: profit.toString(),

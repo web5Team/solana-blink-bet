@@ -24,6 +24,6 @@ export function register() {
         processing = false
       }
     },
-    5000,
+    15000,
   )
 }

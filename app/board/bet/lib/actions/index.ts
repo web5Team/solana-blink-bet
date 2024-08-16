@@ -7,8 +7,8 @@ import { getConnection } from '@/lib/solana'
 import { settleBet } from '@/lib/bet'
 import { assertAuth } from '@/auth'
 
-export async function getWagersAction(pagination: PaginationState) {
-  return await getWagers(pagination)
+export async function getWagersAction(betId: number, pagination: PaginationState) {
+  return await getWagers(betId, pagination)
 }
 
 export async function getBetsAction(page: number = 1, limit: number = 10) {
@@ -34,7 +34,8 @@ export async function settleAllBetsAction() {
   )
 }
 
-export async function settleForSomeOneAction(id: number) {
+export async function settleForSomeOneAction(_id: number) {
   await assertAuth()
+  throw new Error('Not implemented')
   // TODO:
 }
