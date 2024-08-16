@@ -1,13 +1,11 @@
 import process from 'node:process'
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { WebSocket } from 'undici'
-import { drizzle } from 'drizzle-orm/neon-serverless'
+import { drizzle } from 'drizzle-orm/node-postgres'
+import { Pool } from 'pg'
+
 import { bets, dictionary, wagers } from './schema'
 
 export * from './schema'
 export * from './usecase'
-
-neonConfig.webSocketConstructor = WebSocket
 
 export const schema = {
   dictionary,
