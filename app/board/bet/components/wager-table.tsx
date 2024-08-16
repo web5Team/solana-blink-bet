@@ -18,21 +18,25 @@ const columns: ColumnDef<Wager, any>[] = [
     cell: renderLinkToSolscanAccount,
   },
   {
+    accessorKey: 'signature',
+    header: '参加证明',
+    cell: renderLinkToSolscanTx,
+  },
+  {
     accessorKey: 'token',
-    header: '代币',
+    header: '使用代币',
   },
   {
     accessorKey: 'amount',
-    header: '金额',
+    header: '投入金额',
   },
   {
     accessorKey: 'prediction',
     header: '预测',
   },
   {
-    accessorKey: 'signature',
-    header: '参加证明',
-    cell: renderLinkToSolscanTx,
+    accessorKey: 'profit',
+    header: '结算金额',
   },
   {
     accessorKey: 'status',
@@ -40,7 +44,7 @@ const columns: ColumnDef<Wager, any>[] = [
   },
   {
     accessorKey: 'profitSignature',
-    header: '结算交易',
+    header: '结算交易证明',
     cell: renderLinkToSolscanTx,
   },
   {
