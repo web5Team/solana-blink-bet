@@ -1,7 +1,7 @@
 'use client'
 
 import type { Bet } from '@db'
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   type ColumnDef,
   getCoreRowModel,
@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
-import { deleteBetAction, getBetsAction, retrySettleBetAction, settleAllBetsAction } from '../lib/actions'
+import { deleteBetAction, getBetsAction, retrySettleBetAction, settleAllBetsAction, syncWagersToDatabaseAction } from '../lib/actions'
 import { renderDateWithRelative, renderLinkToSolscanAccount, renderLinkToSolscanTx } from '../lib/utils'
 import { BetCreateDialog } from './bet-create'
 import { WagerTable } from './wager-table'
@@ -87,13 +87,8 @@ const columns: ColumnDef<Bet, any>[] = [
           dataQueryKey={{ queryKey: ['bet', 'table'] }}
           onDelete={deleteBetAction}
         >
-          <Button
-            disabled={cell.row.original.status !== 'error'}
-            variant="secondary"
-            onClick={() => retrySettleBetAction(cell.row.original.id)}
-          >
-            重试结算
-          </Button>
+          {cell.row.original.status === 'error' && <ResettleBetButton betId={cell.row.original.id} />}
+
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="secondary">玩家列表</Button>
@@ -106,6 +101,7 @@ const columns: ColumnDef<Bet, any>[] = [
                   {cell.row.original.id}
                   ] 中的玩家
                 </DialogDescription>
+                <SyncWagersButton betId={cell.row.original.id} />
               </DialogHeader>
               <WagerTable betId={cell.row.original.id} />
             </DialogContent>
@@ -115,6 +111,68 @@ const columns: ColumnDef<Bet, any>[] = [
     },
   },
 ]
+
+function SyncWagersButton({ betId }: { betId: number }) {
+  const { toast } = useToast()
+  const queryClient = useQueryClient()
+  const { mutate, isPending, error, reset } = useMutation({
+    mutationFn: () => syncWagersToDatabaseAction(betId),
+  })
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: '重试结算出现异常',
+        description: error.message,
+      })
+      reset()
+    }
+  })
+  useEffect(() => {
+    if (!isPending) {
+      queryClient.refetchQueries({ queryKey: ['bet', betId, 'wagers', 'table', {}], exact: false })
+    }
+  }, [betId, isPending, queryClient])
+  return (
+    <Button
+      className="absolute right-12 top-4"
+      disabled={isPending}
+      onClick={() => mutate()}
+    >
+      {isPending ? '同步中...' : '同步玩家'}
+    </Button>
+  )
+}
+
+function ResettleBetButton({ betId }: { betId: number }) {
+  const { toast } = useToast()
+  const queryClient = useQueryClient()
+  const { mutate, isPending, error, reset } = useMutation({
+    mutationFn: () => retrySettleBetAction(betId),
+  })
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: '重试结算出现异常',
+        description: error.message,
+      })
+      reset()
+    }
+  })
+  useEffect(() => {
+    if (!isPending) {
+      queryClient.refetchQueries({ queryKey: ['bet', 'table', {}], exact: false })
+    }
+  }, [isPending, queryClient])
+  return (
+    <Button
+      disabled={isPending}
+      variant="secondary"
+      onClick={() => mutate()}
+    >
+      {isPending ? '重试中...' : '重试结算'}
+    </Button>
+  )
+}
 
 export function BetTable() {
   const [latestBlockHeight, setLatestBlockHeight] = useState(0)

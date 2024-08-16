@@ -22,7 +22,7 @@ describe('bet/settle transfer out', () => {
   it('should transfer out MUSHU', {
     timeout: 0,
   }, async () => {
-    const conn = getConnection('confirmed')
+    const conn = getConnection()
     const [root] = await getBetRootFundingAccount()
     const funding = await getBetDerivedAccount(2)
     console.info('funding', funding.publicKey.toBase58())

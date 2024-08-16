@@ -110,7 +110,7 @@ export async function loadWagersByFundingAccount(conn: Connection, fundingAccoun
 export async function syncWagersToDatabase(conn: Connection, {
   id: betId,
   fundingAccount,
-}: Pick<Bet, 'fundingAccount' | 'id'>) {
+}: Pick<Bet, 'fundingAccount' | 'id'>, markFullLoaded = true) {
   const betWagers = await loadWagersByFundingAccount(conn, new PublicKey(fundingAccount!))
   return await db.transaction(async ($db) => {
     await $db
@@ -130,13 +130,15 @@ export async function syncWagersToDatabase(conn: Connection, {
     }
 
     // set wager loaded for bet
-    await $db
-      .update(bets)
-      .set({
-        wagerLoaded: true,
-      })
-      .where(eq(bets.id, betId))
-      .then(s => s.rowCount)
+    if (markFullLoaded) {
+      await $db
+        .update(bets)
+        .set({
+          wagerLoaded: true,
+        })
+        .where(eq(bets.id, betId))
+        .then(s => s.rowCount)
+    }
 
     return count
   })

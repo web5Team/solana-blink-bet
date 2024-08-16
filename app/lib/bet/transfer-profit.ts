@@ -14,7 +14,7 @@ export async function transferProfit(
   recipient: PublicKey,
   abortSignal?: AbortSignal,
 ) {
-  const conn = getConnection('confirmed')
+  const conn = getConnection()
   const ins: TransactionInstruction[] = await createInstruction(conn, token, fundingAccount, recipient, amount)
   const latestBlockhash = await conn.getLatestBlockhash()
 
@@ -55,6 +55,7 @@ async function createInstruction(
   ]
 
   if (token === 'SOL') {
+    console.info('📔 Transfer profit SOL from ', fundingAccount.publicKey.toBase58(), 'to', recipient.toBase58(), 'lamports', amount.toNumber())
     ins.push(SystemProgram.transfer({
       fromPubkey: fundingAccount.publicKey,
       toPubkey: recipient,

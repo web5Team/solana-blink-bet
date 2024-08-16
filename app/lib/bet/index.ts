@@ -9,7 +9,7 @@ import { transferProfit } from './transfer-profit'
 import { calculateProfit } from './profit'
 
 async function sendSettlementTransaction() {
-  const conn = getConnection('confirmed')
+  const conn = getConnection()
   const latestBlockhash = await conn.getLatestBlockhash()
   const [root] = await getBetRootFundingAccount()
   const transaction = new Transaction({
@@ -193,7 +193,8 @@ export async function winnerSettle(
       console.info('✅ Transfer profit to winner success:', winner.userAddress, 'token:', token, 'amount:', profit.toString(), 'actual signature:', actualSignature)
     }
     catch (err: any) {
-      await $innerTx.update(wagers).set({
+      // If there is an error, update the wager status using db instead $innerTx. cause err should log to bet table
+      await db.update(wagers).set({
         status: 'error',
         settlementError: parseUnknownError(err),
       })

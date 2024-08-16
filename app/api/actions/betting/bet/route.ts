@@ -87,7 +87,7 @@ export async function POST(_req: Request) {
     }).add(...(await getPriorityFeeInstruction(conn)))
 
     if (selectedPlan.token === 'MUSHU') {
-      await createSendMUSHUTrx(getConnection('confirmed'), trx, fundingAccount, user, selectedPlan)
+      await createSendMUSHUTrx(getConnection(), trx, fundingAccount, user, selectedPlan)
     }
     else {
       createSendSOLTrx(trx, fundingAccount.publicKey, user, selectedPlan)

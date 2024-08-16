@@ -33,7 +33,7 @@ export default function BoardPage() {
     refetchOnReconnect: false,
   })
   const { mutateAsync, isPending: saving } = useMutation({
-    mutationKey: ['action'],
+    mutationKey: ['setBettingActionConfigAction'],
     mutationFn: async () => {
       return await setBettingActionConfigAction(previewData.data!)
     },
