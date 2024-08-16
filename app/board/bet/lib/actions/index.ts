@@ -1,6 +1,6 @@
 'use server'
 
-import { createBet, deleteBet, getBets, getWagers, settleBets } from '@db'
+import { createBet, deleteBet, getBets, getWagers, retrySettleBet, settleBets } from '@db'
 import type { PaginationState } from '@tanstack/react-table'
 import { createBetActionSchema } from './schema'
 import { getConnection } from '@/lib/solana'
@@ -32,6 +32,16 @@ export async function settleAllBetsAction() {
     conn,
     settleBet,
   )
+}
+
+/**
+ * settle bet even if it's successful
+ * @param id bet id
+ * @returns void
+ */
+export async function retrySettleBetAction(id: number) {
+  await assertAuth()
+  return await retrySettleBet(getConnection(), id, settleBet)
 }
 
 export async function settleForSomeOneAction(_id: number) {

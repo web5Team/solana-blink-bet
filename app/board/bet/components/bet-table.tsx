@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
-import { deleteBetAction, getBetsAction, settleAllBetsAction } from '../lib/actions'
+import { deleteBetAction, getBetsAction, retrySettleBetAction, settleAllBetsAction } from '../lib/actions'
 import { renderDateWithRelative, renderLinkToSolscanAccount, renderLinkToSolscanTx } from '../lib/utils'
 import { BetCreateDialog } from './bet-create'
 import { WagerTable } from './wager-table'
@@ -87,6 +87,13 @@ const columns: ColumnDef<Bet, any>[] = [
           dataQueryKey={{ queryKey: ['bet', 'table'] }}
           onDelete={deleteBetAction}
         >
+          <Button
+            disabled={cell.row.original.status !== 'error'}
+            variant="secondary"
+            onClick={() => retrySettleBetAction(cell.row.original.id)}
+          >
+            重试结算
+          </Button>
           <Dialog>
             <DialogTrigger asChild>
               <Button variant="secondary">玩家列表</Button>

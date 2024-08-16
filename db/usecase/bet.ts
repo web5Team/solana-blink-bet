@@ -52,3 +52,17 @@ export async function createBet({ startedAt, scheduledDrawingAt }: { startedAt: 
 export async function deleteBet(id: number) {
   return (await db.delete(bets).where(eq(bets.id, id))).rowCount ?? 0
 }
+
+export async function retrySettleBet(conn: Connection, id: number, settleBet: (conn: Connection, bet: typeof bets.$inferSelect) => Promise<void>) {
+  const bet = await db.select()
+    .from(bets)
+    .where(and(
+      eq(bets.id, id),
+      eq(bets.status, 'error'),
+    ))
+    .limit(1)
+    .then(it => it.at(0))
+  if (!bet)
+    throw new Error('Bet not found')
+  return settleBet(conn, bet)
+}
