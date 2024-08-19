@@ -40,7 +40,7 @@ export default function BoardPage() {
   })
 
   const openDialto = useCallback(() => {
-    const url = `https://dial.to/devnet?action=solana-action:${location.origin}/api/actions/betting`
+    const url = `https://dial.to/?action=solana-action:${location.origin}/api/actions/betting`
     window.open(url)
   }, [])
 
