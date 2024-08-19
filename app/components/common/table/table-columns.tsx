@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 import { type InvalidateQueryFilters, useMutation, useQueryClient } from '@tanstack/react-query'
 import type { CellContext } from '@tanstack/react-table'
 import React, { type ComponentProps, useEffect, useState } from 'react'
@@ -23,7 +24,7 @@ export function ActionsCol<T extends { id: unknown }>({
   return (
     <div className="space-x-2 row">
       {children}
-      {onDelete && (
+      {/* {onDelete && (
         <PopoverConfirmToAction
           label="Delete"
           variant="destructive"
@@ -40,7 +41,7 @@ export function ActionsCol<T extends { id: unknown }>({
             Delete
           </Button>
         </PopoverConfirmToAction>
-      )}
+      )} */}
     </div>
   )
 }

@@ -1,9 +1,9 @@
 import db, { bets } from '@db'
 import { and, count, desc, eq, isNull, lte, or } from 'drizzle-orm'
-import type { Connection } from '@solana/web3.js'
+import { type Connection, LAMPORTS_PER_SOL, SystemProgram, Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
 import { withPagination } from './utils'
 import { dayjs } from '@/lib/utils'
-import { getBetDerivedAccount } from '@/lib/solana'
+import { getBetDerivedAccount, getBetRootFundingAccount, getConnection } from '@/lib/solana'
 
 export async function settleBets(conn: Connection, settleBet: (conn: Connection, bet: typeof bets.$inferSelect) => Promise<void>) {
   console.info('📔 Loading Unsettled bets...')
@@ -41,6 +41,22 @@ export async function createBet({ startedAt, scheduledDrawingAt }: { startedAt: 
     if (id === undefined)
       throw new Error('create bet failed')
     const keypair = await getBetDerivedAccount(id)
+    const [root] = await getBetRootFundingAccount()
+
+    // transfer SOL to the funding account
+    const conn = getConnection()
+    const blockhash = await conn.getLatestBlockhash()
+    const trx = new Transaction({
+      ...blockhash,
+      feePayer: root.publicKey,
+    })
+    trx.add(SystemProgram.transfer({
+      fromPubkey: root.publicKey,
+      lamports: 0.001 * LAMPORTS_PER_SOL,
+      toPubkey: keypair.publicKey,
+    }))
+    await sendAndConfirmTransaction(conn, trx, [root])
+
     await $db.update(bets).set({
       fundingAccount: keypair.publicKey.toBase58(),
     }).where(eq(bets.id, id))

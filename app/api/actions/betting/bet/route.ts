@@ -1,5 +1,5 @@
 /* eslint-disable node/prefer-global/buffer */
-import { and, asc, isNull, lte, ne } from 'drizzle-orm'
+import { and, asc, eq, gte, isNull, lte } from 'drizzle-orm'
 import { type Connection, type Keypair, LAMPORTS_PER_SOL, type ParsedAccountData, PublicKey, SystemProgram, Transaction, TransactionInstruction } from '@solana/web3.js'
 import type { BetPrediction, BetToken } from '@schema'
 import db, { bets } from '@db'
@@ -68,10 +68,12 @@ export async function POST(_req: Request) {
       .orderBy(asc(bets.startedAt))
       .where(and(
         lte(bets.startedAt, dayjs().toDate()),
-        ne(bets.status, 'success'),
+        gte(bets.scheduledDrawingAt, dayjs().toDate()),
+        eq(bets.status, 'pending'),
         isNull(bets.result),
       ))
-      .limit(1).then(result => result.at(0))
+      .limit(1)
+      .then(result => result.at(0))
 
     if (!bet) {
       throw new Error('No bet started for now.')
