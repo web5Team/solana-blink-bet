@@ -20,12 +20,19 @@ const nextConfig = {
     typedRoutes: true,
     instrumentationHook: true,
   },
+  productionBrowserSourceMaps: true,
   compiler: {
     styledComponents: {
       minify: true,
       transpileTemplateLiterals: true,
       pure: true,
     },
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.devtool = 'source-map'
+    }
+    return config
   },
   async headers() {
     return [
