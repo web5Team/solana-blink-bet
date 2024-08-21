@@ -4,7 +4,7 @@ import { createAssociatedTokenAccountIdempotentInstruction, createTransferInstru
 import { type Connection, type Keypair, PublicKey, SystemProgram, Transaction, TransactionInstruction, TransactionMessage, VersionedTransaction, sendAndConfirmTransaction } from '@solana/web3.js'
 import type BigNumber from 'bignumber.js'
 import bs58 from 'bs58'
-import { getConnection, getPriorityFeeInstruction } from '../solana'
+import { getConnection } from '../solana'
 import { MUSHU_MINT } from './MUSHU'
 
 export async function transferProfit(
@@ -51,7 +51,7 @@ async function createInstruction(
   amount: BigNumber,
 ) {
   const ins: TransactionInstruction[] = [
-    ...(await getPriorityFeeInstruction(conn)),
+    // ...(await getPriorityFeeInstruction(conn)),
   ]
 
   if (token === 'SOL') {
