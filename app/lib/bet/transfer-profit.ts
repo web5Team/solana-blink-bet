@@ -34,7 +34,7 @@ export async function transferProfit(
         transaction,
         [fundingAccount],
         {
-          maxRetries: 50,
+          maxRetries: 10,
           commitment: 'confirmed',
           abortSignal,
         },
