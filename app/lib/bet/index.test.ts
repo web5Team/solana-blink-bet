@@ -28,8 +28,8 @@ describe('bet/settle transfer out', () => {
     console.info('funding', funding.publicKey.toBase58())
     // const fromAccount = await getAssociatedTokenAddress(mint, funding.publicKey)
     // const toAccount = await getAssociatedTokenAddress(mint, new PublicKey('4nKiPKGKbQa2NNDspNU2E15pGfKVbBeJJqe3v83msT5o'))
-    const from = await getAssociatedTokenAddress(MUSHU_MINT, root.publicKey)
-    const to = await getAssociatedTokenAddress(MUSHU_MINT, funding.publicKey)
+    const from = await getAssociatedTokenAddress(MUSHU_MINT, root.publicKey, true)
+    const to = await getAssociatedTokenAddress(MUSHU_MINT, funding.publicKey, true)
 
     const ins: TransactionInstruction[] = [
       ...(await getPriorityFeeInstruction(conn)),

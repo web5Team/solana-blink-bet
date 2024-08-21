@@ -65,8 +65,8 @@ async function createInstruction(
   else if (token === 'MUSHU') {
     // transaction.add(SystemProgram.)
     const MINT = new PublicKey(MUSHU_MINT)
-    const fromAccount = await getAssociatedTokenAddress(MINT, fundingAccount.publicKey)
-    const toAccount = await getAssociatedTokenAddress(MINT, recipient)
+    const fromAccount = await getAssociatedTokenAddress(MINT, fundingAccount.publicKey, true)
+    const toAccount = await getAssociatedTokenAddress(MINT, recipient, true)
     ins.push(
       createAssociatedTokenAccountIdempotentInstruction(
         fundingAccount.publicKey,

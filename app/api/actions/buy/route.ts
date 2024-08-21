@@ -21,7 +21,7 @@ export async function POST(_req: Request) {
       swapMode: 'ExactOut',
     })
 
-    const destinationTokenAccount = await getAssociatedTokenAddress(MUSHU_MINT, userPublicKey)
+    const destinationTokenAccount = await getAssociatedTokenAddress(MUSHU_MINT, userPublicKey, true)
 
     const {
       swapTransaction,

@@ -11,7 +11,7 @@ describe('mUSHU Token', () => {
     const mushuRequiredAmount = 3416448
     const bob = new PublicKey(bs58.decode('4nKiPKGKbQa2NNDspNU2E15pGfKVbBeJJqe3v83msT5o'))
 
-    const bobMUSHUTokenAccount = await getAssociatedTokenAddress(MUSHU_MINT, bob)
+    const bobMUSHUTokenAccount = await getAssociatedTokenAddress(MUSHU_MINT, bob, true)
 
     const query = {
       inputMint: 'So11111111111111111111111111111111111111112',
@@ -30,7 +30,7 @@ describe('mUSHU Token', () => {
     const response = await getSwapTransaction({
       quoteResponse,
       userPublicKey: bob,
-      feeAccount: bob,
+      // feeAccount: bob,
       trackingAccount: bob,
       destinationTokenAccount: bobMUSHUTokenAccount,
     })

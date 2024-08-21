@@ -140,11 +140,13 @@ async function createSendMUSHUTrx(
   const fromAccount = await getAssociatedTokenAddress(
     MUSHU_MINT,
     user,
+    true,
   )
   console.info('from token account', fromAccount.toBase58())
   const toAccount = await getAssociatedTokenAddress(
     MUSHU_MINT,
     fundingAccount.publicKey,
+    true,
   )
   console.info('to token account', toAccount.toBase58())
   trx.add(
