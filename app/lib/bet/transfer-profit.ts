@@ -105,7 +105,7 @@ async function simulateTransaction(
         payerKey: payer,
       }).compileToLegacyMessage(),
     ),
-    { commitment: 'confirmed' },
+    { commitment: 'confirmed', replaceRecentBlockhash: true },
   )
 
   // console.info('simulated result:', simulated.value)
