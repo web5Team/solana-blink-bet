@@ -47,14 +47,16 @@ describe('bet/settle transfer out', () => {
       ),
     ]
 
-    const latestBlockhash = await conn.getLatestBlockhash({ commitment: 'confirmed' })
+    const latestBlockhash = await conn.getLatestBlockhash()
     const msgV0 = new TransactionMessage({
       instructions: ins,
       recentBlockhash: latestBlockhash.blockhash,
       payerKey: root.publicKey,
     })
     // console.info('signature:', bs58.encode(trx.signature!))
-    const result = await conn.simulateTransaction(new VersionedTransaction(msgV0.compileToLegacyMessage()))
+    const result = await conn.simulateTransaction(new VersionedTransaction(msgV0.compileToLegacyMessage()), {
+      commitment: 'confirmed',
+    })
     // const signature = await conn.sendRawTransaction(
     //   trx.serialize(),
     // )

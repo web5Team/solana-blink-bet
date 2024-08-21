@@ -55,7 +55,7 @@ async function createInstruction(
   ]
 
   if (token === 'SOL') {
-    console.info('📔 Transfer profit SOL from ', fundingAccount.publicKey.toBase58(), 'to', recipient.toBase58(), 'lamports', amount.toNumber())
+    // console.info('📔 Transfer profit SOL from ', fundingAccount.publicKey.toBase58(), 'to', recipient.toBase58(), 'lamports', amount.toNumber())
     ins.push(SystemProgram.transfer({
       fromPubkey: fundingAccount.publicKey,
       toPubkey: recipient,
@@ -105,6 +105,7 @@ async function simulateTransaction(
         payerKey: payer,
       }).compileToLegacyMessage(),
     ),
+    { commitment: 'confirmed' },
   )
 
   // console.info('simulated result:', simulated.value)

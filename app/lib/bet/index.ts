@@ -1,6 +1,6 @@
 import db, { bets, wagers } from '@db'
 import { type Connection, type Keypair, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction } from '@solana/web3.js'
-import { and, eq, ne } from 'drizzle-orm'
+import { and, count, eq, ne } from 'drizzle-orm'
 import { parseUnknownError } from '@utils'
 import BigNumber from 'bignumber.js'
 import { getBetDerivedAccount, getBetRootFundingAccount, getConnection } from '../solana'
@@ -56,8 +56,13 @@ export async function settleBet(
       console.info('✅ All wagers synced to Database, length: ', rowCount)
     }
 
+    console.info('✅ All wagers synced to Database, length: ', await db.select({
+      count: count(),
+    }).from(wagers).where(eq(wagers.betId, bet.id)).then(r => r.at(0)?.count ?? 0))
+
     // Then settle winners
     await db.transaction(async ($tx) => {
+      console.info('📔 Settle Winners Transaction Started.')
       await $tx.update(bets).set({
         closedAt: new Date(),
         result: betResult,
