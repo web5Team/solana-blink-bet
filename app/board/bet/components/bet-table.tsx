@@ -20,7 +20,6 @@ import { Button } from '@/components/ui/button'
 import { Table } from '@/components/ui/table'
 import { ActionsCol } from '@/components/common/table/table-columns'
 import { useToast } from '@/components/ui/use-toast'
-import { Loading } from '@/components/common/loading'
 import { useLatestBlockHashQuery } from '@/lib/solana/hooks'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 
@@ -180,7 +179,7 @@ export function BetTable() {
   const { toast } = useToast()
 
   const {
-    mutateAsync: settleAllBets,
+    // mutateAsync: settleAllBets,
     reset: resetSettleBetsMutation,
     data: settleResult,
     isSuccess: settleBetsSuccess,
@@ -241,13 +240,13 @@ export function BetTable() {
           <Button disabled={settleBetsPending}>创建</Button>
         </BetCreateDialog>
 
-        <Button
+        {/* <Button
           disabled={settleBetsPending}
           onClick={() => settleAllBets()}
         >
           {settleBetsPending && <Loading className="mr-2" />}
           结算
-        </Button>
+        </Button> */}
 
         <div className="flex-grow" />
 
